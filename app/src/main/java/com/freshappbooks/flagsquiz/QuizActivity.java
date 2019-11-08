@@ -42,15 +42,15 @@ public class QuizActivity extends AppCompatActivity {
         buttons.add(button2);
         buttons.add(button3);
 
-        setRandomBackground();
         initArrays();
 
         playGame();
-        fullButtons();
     }
+
     private void playGame() {
         generateQuestion();
-
+        fullButtons();
+        setRandomBackground();
     }
 
     private void fullButtons() {
@@ -497,5 +497,6 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void onClickAnswer(View view) {
+        playGame();
     }
 }
