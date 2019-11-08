@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FlagsQuiz</string>
+    <string name="start_game">Начать игру</string>
+    <string name="quiz_image">Quiz image</string>
+</resources>
