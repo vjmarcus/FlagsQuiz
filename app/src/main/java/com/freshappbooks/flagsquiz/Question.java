@@ -4,17 +4,12 @@ public class Question {
 
     private int id;
     private String questionText;
-    private String imagePath;
+    private String rightAnswer;
 
-    public Question(int id, String questionText) {
+    public Question(int id, String questionText, String rightAnswer) {
         this.id = id;
         this.questionText = questionText;
-    }
-
-    public Question(int id, String questionText, String imagePath) {
-        this.id = id;
-        this.questionText = questionText;
-        this.imagePath = imagePath;
+        this.rightAnswer = rightAnswer;
     }
 
     public int getId() {
@@ -33,11 +28,11 @@ public class Question {
         this.questionText = questionText;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public String getRightAnswer() {
+        return rightAnswer;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setRightAnswer(String rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 }
