@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,9 @@ public class QuizActivity extends AppCompatActivity {
     ArrayList<String> countries;
     ArrayList<String> capitals;
     ArrayList<Button> buttons;
+    ArrayList<ImageView> images;
+
+    ImageView imageView0, imageView1, imageView2;
 
     private int gameCounter;
     private int rightAnswerCounter;
@@ -40,6 +44,7 @@ public class QuizActivity extends AppCompatActivity {
     private int counterLives;
 
     String rightAnswerText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,18 @@ public class QuizActivity extends AppCompatActivity {
         buttons.add(button2);
         buttons.add(button3);
 
+
+        imageView0 = findViewById(R.id.imageView0);
+        imageView1 = findViewById(R.id.imageView1);
+        imageView2 = findViewById(R.id.imageView2);
+        images = new ArrayList<>();
+        images.add(imageView0);
+        images.add(imageView1);
+        images.add(imageView2);
+        for (int i = 0; i < images.size(); i++) {
+            images.get(i).setVisibility(View.INVISIBLE);
+        }
+
         rightSound = MediaPlayer.create(this, R.raw.right);
         wrongSound = MediaPlayer.create(this, R.raw.wrong);
 
@@ -72,16 +89,18 @@ public class QuizActivity extends AppCompatActivity {
 
     private void playGame() {
         if (counterLives > 0) {
+            showLives();
             setRandomBackground();
             generateQuestion();
             fillButtons();
             resetButtonColors();
         } else {
             Intent intent = new Intent(this, GameOverActivity.class);
+            startActivity(intent);
         }
     }
 
-    private void fillButtons () {
+    private void fillButtons() {
         for (int i = 0; i < buttons.size(); i++) {
             if (i == numberOfRightAnswer) {
                 buttons.get(i).setText(rightAnswerText);
@@ -105,8 +124,6 @@ public class QuizActivity extends AppCompatActivity {
     private int generateWrongAnswer() {
         return (int) (Math.random() * capitals.size());
     }
-
-
 
 
     private void setRandomBackground() {
@@ -138,7 +155,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void resetButtonColors() {
-        for (int i = 0; i< buttons.size(); i++) {
+        for (int i = 0; i < buttons.size(); i++) {
             buttons.get(i).setBackgroundColor(getResources().getColor(R.color.resetColor));
         }
     }
@@ -545,6 +562,7 @@ public class QuizActivity extends AppCompatActivity {
             button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             Toast.makeText(this, "НЕТ! Правильный ответ : " + rightAnswerText, Toast.LENGTH_LONG).show();
             soundPlay(wrongSound);
+            counterLives--;
         }
         gameCounter++;
         final Handler handler = new Handler();
@@ -558,6 +576,16 @@ public class QuizActivity extends AppCompatActivity {
 
     public void soundPlay(MediaPlayer sound) {
         sound.start();
+    }
 
+    public void showLives() {
+        for (int i = 0; i < 3; i++) {
+            if (i < counterLives) {
+                images.get(i).setVisibility(View.VISIBLE);
+            }
+            else {
+                images.get(i).setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }
