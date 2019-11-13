@@ -32,9 +32,9 @@ public class QuizActivity extends AppCompatActivity {
     ImageView imageView0, imageView1, imageView2;
 
     private int gameCounter;
-    private int rightAnswerCounter;
+    public static int rightAnswerCounter;
     private int numberOfQuestion;
-    public static int numberOfRightAnswer;
+    private int numberOfRightAnswer;
     TextView textViewQuestionText, textViewGameCounter;
     Button button1, button2, button3, button0;
 
