@@ -34,7 +34,7 @@ public class QuizActivity extends AppCompatActivity {
     private int gameCounter;
     private int rightAnswerCounter;
     private int numberOfQuestion;
-    private int numberOfRightAnswer;
+    public static int numberOfRightAnswer;
     TextView textViewQuestionText, textViewGameCounter;
     Button button1, button2, button3, button0;
 
