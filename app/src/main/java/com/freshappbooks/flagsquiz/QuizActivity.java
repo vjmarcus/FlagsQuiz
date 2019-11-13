@@ -3,10 +3,16 @@ package com.freshappbooks.flagsquiz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,18 +26,24 @@ public class QuizActivity extends AppCompatActivity {
     ArrayList<String> capitals;
     ArrayList<Button> buttons;
 
+    private int gameCounter;
+    private int rightAnswerCounter;
     private int numberOfQuestion;
     private int numberOfRightAnswer;
-    Question question;
-    TextView textViewQuestionText;
+    TextView textViewQuestionText, textViewGameCounter;
     Button button1, button2, button3, button0;
 
+    private MediaPlayer rightSound;
+    private MediaPlayer wrongSound;
+
+    String rightAnswerText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         layout = findViewById(R.id.constraint_layout);
         textViewQuestionText = findViewById(R.id.question_textView);
+        textViewGameCounter = findViewById(R.id.textView_game_counter);
         button1 = findViewById(R.id.button0);
         button2 = findViewById(R.id.button1);
         button3 = findViewById(R.id.button2);
@@ -42,39 +54,52 @@ public class QuizActivity extends AppCompatActivity {
         buttons.add(button2);
         buttons.add(button3);
 
-        initArrays();
+        rightSound = MediaPlayer.create(this, R.raw.right);
+        wrongSound = MediaPlayer.create(this, R.raw.wrong);
 
+
+
+        initArrays();
         playGame();
+        gameCounter = 0;
+        rightAnswerCounter = 0;
+
     }
 
     private void playGame() {
-        generateQuestion();
-        fullButtons();
         setRandomBackground();
+        generateQuestion();
+        fillButtons();
+        resetButtonColors();
+
     }
 
-    private void fullButtons() {
+    private void fillButtons () {
         for (int i = 0; i < buttons.size(); i++) {
             if (i == numberOfRightAnswer) {
-                buttons.get(i).setText(question.getRightAnswer());
+                buttons.get(i).setText(rightAnswerText);
+                Log.d(TAG, "fillButtons rightAnswer is : " + buttons.get(i).getTag());
             } else {
-                int wrongAnswer = generateWrongAnswer();
-                buttons.get(i).setText(capitals.get(wrongAnswer));
+                int wrong = generateWrongAnswer();
+                buttons.get(i).setText(capitals.get(wrong));
             }
+            textViewGameCounter.setText(rightAnswerCounter + "/" + gameCounter);
         }
     }
 
     private void generateQuestion() {
         numberOfQuestion = (int) (Math.random() * countries.size());
         numberOfRightAnswer = (int) (Math.random() * buttons.size());
-        question = new Question(numberOfQuestion, countries.get(numberOfQuestion), capitals.get(numberOfQuestion));
-        textViewQuestionText.setText("Выберите столицу страны: \n" + countries.get(numberOfQuestion));
+        rightAnswerText = capitals.get(numberOfQuestion);
+        textViewQuestionText.setText("Выберите столицу страны:\n" + countries.get(numberOfQuestion));
 
     }
 
     private int generateWrongAnswer() {
-        return (int) (Math.random() * countries.size());
+        return (int) (Math.random() * capitals.size());
     }
+
+
 
 
     private void setRandomBackground() {
@@ -102,6 +127,12 @@ public class QuizActivity extends AppCompatActivity {
             default:
                 layout.setBackgroundColor(getResources().getColor(R.color.color0));
                 break;
+        }
+    }
+
+    private void resetButtonColors() {
+        for (int i = 0; i< buttons.size(); i++) {
+            buttons.get(i).setBackgroundColor(getResources().getColor(R.color.resetColor));
         }
     }
 
@@ -497,6 +528,26 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void onClickAnswer(View view) {
-        playGame();
+        Button button = (Button) view;
+        if (button.getText().equals(rightAnswerText)) {
+            Toast.makeText(this, "Правильно!", Toast.LENGTH_SHORT).show();
+            button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            rightAnswerCounter++;
+        } else {
+            button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            Toast.makeText(this, "НЕТ! Правильный ответ : " + rightAnswerText, Toast.LENGTH_LONG).show();
+        }
+        gameCounter++;
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                playGame();
+            }
+        }, 1500);
+    }
+
+    public void soundPlay() {
+
     }
 }
