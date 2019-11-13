@@ -3,6 +3,7 @@ package com.freshappbooks.flagsquiz;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -36,6 +37,8 @@ public class QuizActivity extends AppCompatActivity {
     private MediaPlayer rightSound;
     private MediaPlayer wrongSound;
 
+    private int counterLives;
+
     String rightAnswerText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +61,24 @@ public class QuizActivity extends AppCompatActivity {
         wrongSound = MediaPlayer.create(this, R.raw.wrong);
 
 
-
-        initArrays();
-        playGame();
         gameCounter = 0;
         rightAnswerCounter = 0;
+        counterLives = 3;
+        initArrays();
+        playGame();
+
 
     }
 
     private void playGame() {
-        setRandomBackground();
-        generateQuestion();
-        fillButtons();
-        resetButtonColors();
-
+        if (counterLives > 0) {
+            setRandomBackground();
+            generateQuestion();
+            fillButtons();
+            resetButtonColors();
+        } else {
+            Intent intent = new Intent(this, GameOverActivity.class);
+        }
     }
 
     private void fillButtons () {
@@ -533,9 +540,11 @@ public class QuizActivity extends AppCompatActivity {
             Toast.makeText(this, "Правильно!", Toast.LENGTH_SHORT).show();
             button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             rightAnswerCounter++;
+            soundPlay(rightSound);
         } else {
             button.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             Toast.makeText(this, "НЕТ! Правильный ответ : " + rightAnswerText, Toast.LENGTH_LONG).show();
+            soundPlay(wrongSound);
         }
         gameCounter++;
         final Handler handler = new Handler();
@@ -547,7 +556,8 @@ public class QuizActivity extends AppCompatActivity {
         }, 1500);
     }
 
-    public void soundPlay() {
+    public void soundPlay(MediaPlayer sound) {
+        sound.start();
 
     }
 }
