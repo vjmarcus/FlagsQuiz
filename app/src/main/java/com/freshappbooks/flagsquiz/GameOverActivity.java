@@ -31,14 +31,15 @@ public class GameOverActivity extends AppCompatActivity {
         editor.putInt("last", result);
         if (bestResult < result) {
             editor.putInt("best", result);
+            textViewResult.setText("Ваш результат: " + result);
             textViewBestResult.setText("Ваш лучший результат: " + result);
-        } else {
 
+        } else {
+            textViewResult.setText("Ваш результат: " + result);
+            textViewBestResult.setText("Ваш лучший результат: " + bestResult);
         }
         editor.apply();
 
-        textViewResult.setText("Ваш результат: " + result);
-        textViewBestResult.setText("Ваш лучший результат: " + bestResult);
     }
 
     public void onClickAnotherGame(View view) {
