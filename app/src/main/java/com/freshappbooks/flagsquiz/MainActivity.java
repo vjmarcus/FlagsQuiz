@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     Button startGameButton;
     private int bestResult;
     private int lastResult;
+    public static final String BANNER = "ca-app-pub-7831171328659727/8682651059";
+    public static final String INTERSTITIAL = "ca-app-pub-7831171328659727/6526921694";
 
     TextView textViewBestResult, textViewLastResult;
     @Override

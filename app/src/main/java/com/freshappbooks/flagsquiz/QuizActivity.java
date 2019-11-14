@@ -16,6 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -44,6 +49,7 @@ public class QuizActivity extends AppCompatActivity {
     private int counterLives;
 
     String rightAnswerText;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,10 @@ public class QuizActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraint_layout);
         textViewQuestionText = findViewById(R.id.question_textView);
         textViewGameCounter = findViewById(R.id.textView_game_counter);
+
+        initGoogleBanner();
+        initGoogleInter();
+
         button1 = findViewById(R.id.button0);
         button2 = findViewById(R.id.button1);
         button3 = findViewById(R.id.button2);
@@ -85,6 +95,30 @@ public class QuizActivity extends AppCompatActivity {
         playGame();
 
 
+    }
+
+    private void initGoogleBanner() {
+        //Banner
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.BANNER);
+        adView.setAdUnitId(MainActivity.BANNER);
+        adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+    }
+
+    private void initGoogleInter() {
+        // Initialize google ads
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(MainActivity.INTERSTITIAL);
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+    }
+
+    void showGoogleInter() {
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
     }
 
     private void playGame() {
@@ -563,6 +597,7 @@ public class QuizActivity extends AppCompatActivity {
             Toast.makeText(this, "НЕТ! Правильный ответ : " + rightAnswerText, Toast.LENGTH_LONG).show();
             soundPlay(wrongSound);
             counterLives--;
+            showGoogleInter();
         }
         gameCounter++;
         final Handler handler = new Handler();

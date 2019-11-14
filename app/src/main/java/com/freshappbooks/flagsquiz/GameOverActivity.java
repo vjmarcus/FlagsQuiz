@@ -1,6 +1,7 @@
 package com.freshappbooks.flagsquiz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,13 +16,18 @@ public class GameOverActivity extends AppCompatActivity {
     public static final String TAG = "MyApp";
     public static final String MY_PREF_NAME = "com.freshappbooks.flagsquiz_MY_PREF_NAME";
     private int bestResult;
+    ConstraintLayout layout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
+        layout = findViewById(R.id.constraint_layout);
         int result = QuizActivity.rightAnswerCounter;
+
+        setBacground(result);
+
         Log.d(TAG, "onCreate: " + result);
         textViewResult = findViewById(R.id.textView_result);
         textViewBestResult = findViewById(R.id.textView_best_result);
@@ -45,5 +51,15 @@ public class GameOverActivity extends AppCompatActivity {
     public void onClickAnotherGame(View view) {
         Intent intent = new Intent(this, QuizActivity.class);
         startActivity(intent);
+    }
+
+    private void setBacground(int result) {
+        if (result < 2) {
+            layout.setBackgroundResource(R.drawable.grad0small);
+        } else if (result < 10 && result > 2) {
+            layout.setBackgroundResource(R.drawable.grad1small);
+        } else {
+            layout.setBackgroundResource(R.drawable.grad2small);
+        }
     }
 }

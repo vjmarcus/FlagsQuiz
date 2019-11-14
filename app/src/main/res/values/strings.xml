@@ -3,4 +3,5 @@
     <string name="start_game">Начать игру</string>
     <string name="quiz_image">Quiz image</string>
     <string name="result_label">Ваш результат:</string>
+    <string name="geo_test_label">Тест по Географии: Страна - Столица</string>
 </resources>

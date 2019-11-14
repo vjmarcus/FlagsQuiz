@@ -9,6 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7831171328659727~1684132476" />
         <activity android:name=".GameOverActivity"></activity>
         <activity android:name=".QuizActivity" />
         <activity android:name=".MainActivity">
