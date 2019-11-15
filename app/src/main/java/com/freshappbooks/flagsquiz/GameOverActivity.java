@@ -26,7 +26,7 @@ public class GameOverActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraint_layout);
         int result = QuizActivity.rightAnswerCounter;
 
-        setBacground(result);
+        setBackground(result);
 
         Log.d(TAG, "onCreate: " + result);
         textViewResult = findViewById(R.id.textView_result);
@@ -53,7 +53,7 @@ public class GameOverActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void setBacground(int result) {
+    private void setBackground(int result) {
         if (result < 2) {
             layout.setBackgroundResource(R.drawable.grad0small);
         } else if (result < 10 && result > 2) {

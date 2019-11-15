@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -47,7 +45,7 @@ public class QuizActivity extends AppCompatActivity {
     private MediaPlayer wrongSound;
 
     private int counterLives;
-
+    private boolean isButtonClicked;
     String rightAnswerText;
     private InterstitialAd mInterstitialAd;
 
@@ -123,6 +121,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void playGame() {
         if (counterLives > 0) {
+            setButtonsActive();
             showLives();
             setRandomBackground();
             generateQuestion();
@@ -599,6 +598,7 @@ public class QuizActivity extends AppCompatActivity {
             counterLives--;
             showGoogleInter();
         }
+        setButtonsInactive();
         gameCounter++;
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -617,10 +617,21 @@ public class QuizActivity extends AppCompatActivity {
         for (int i = 0; i < 3; i++) {
             if (i < counterLives) {
                 images.get(i).setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 images.get(i).setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    private void setButtonsInactive() {
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons.get(i).setEnabled(false);
+        }
+    }
+
+    private void setButtonsActive() {
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons.get(i).setEnabled(true);
         }
     }
 }
