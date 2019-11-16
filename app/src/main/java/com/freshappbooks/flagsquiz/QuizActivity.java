@@ -133,14 +133,20 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void fillButtons() {
+        ArrayList<Integer> listOfReplays = new ArrayList<>();
+        listOfReplays.add(numberOfQuestion);
         for (int i = 0; i < buttons.size(); i++) {
             if (i == numberOfRightAnswer) {
                 buttons.get(i).setText(rightAnswerText);
                 Log.d(TAG, "fillButtons rightAnswer is : " + buttons.get(i).getTag());
             } else {
-                int wrong = generateWrongAnswer();
-                if (wrong != numberOfRightAnswer) {
-                    buttons.get(i).setText(capitals.get(wrong));
+                while (true) {
+                    int wrong = generateWrongAnswer();
+                    if (!listOfReplays.contains(wrong)) {
+                        listOfReplays.add(wrong);
+                        buttons.get(i).setText(capitals.get(wrong));
+                        break;
+                    }
                 }
             }
             textViewGameCounter.setText(rightAnswerCounter + "/" + gameCounter);
