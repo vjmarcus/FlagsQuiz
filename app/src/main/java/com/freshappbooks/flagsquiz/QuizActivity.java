@@ -26,20 +26,20 @@ public class QuizActivity extends AppCompatActivity {
 
     public static final String TAG = "MyApp";
 
-    ConstraintLayout layout;
-    ArrayList<String> countries;
-    ArrayList<String> capitals;
-    ArrayList<Button> buttons;
-    ArrayList<ImageView> images;
+    private  ConstraintLayout layout;
+    private  ArrayList<String> countries;
+    private  ArrayList<String> capitals;
+    private  ArrayList<Button> buttons;
+    private  ArrayList<ImageView> images;
 
-    ImageView imageView0, imageView1, imageView2;
+    private  ImageView imageView0, imageView1, imageView2;
 
     private int gameCounter;
     public static int rightAnswerCounter;
     private int numberOfQuestion;
     private int numberOfRightAnswer;
-    TextView textViewQuestionText, textViewGameCounter;
-    Button button1, button2, button3, button0;
+    private  TextView textViewQuestionText, textViewGameCounter;
+    private  Button button1, button2, button3, button0;
 
     private MediaPlayer rightSound;
     private MediaPlayer wrongSound;
@@ -89,8 +89,7 @@ public class QuizActivity extends AppCompatActivity {
         rightAnswerCounter = 0;
         counterLives = 3;
         initArrays();
-        playGame();
-
+            playGame();
 
     }
 
@@ -112,14 +111,16 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     void showGoogleInter() {
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
+        if (counterLives != 1) {
+            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            if (mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            }
         }
     }
 
     private void playGame() {
-        if (counterLives > 0) {
+        if (counterLives > 0 ) {
             setButtonsActive();
             showLives();
             setRandomBackground();
@@ -127,9 +128,13 @@ public class QuizActivity extends AppCompatActivity {
             fillButtons();
             resetButtonColors();
         } else {
-            Intent intent = new Intent(this, GameOverActivity.class);
-            startActivity(intent);
+            intentToGameOverActivity();
         }
+    }
+
+    private void intentToGameOverActivity() {
+        Intent intent = new Intent(this, GameOverActivity.class);
+        startActivity(intent);
     }
 
     private void fillButtons() {
@@ -158,7 +163,6 @@ public class QuizActivity extends AppCompatActivity {
         numberOfRightAnswer = (int) (Math.random() * buttons.size());
         rightAnswerText = capitals.get(numberOfQuestion);
         textViewQuestionText.setText("Выберите столицу страны:\n" + countries.get(numberOfQuestion));
-
     }
 
     private int generateWrongAnswer() {
