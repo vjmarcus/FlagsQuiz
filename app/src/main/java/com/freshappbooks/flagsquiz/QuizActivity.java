@@ -26,20 +26,21 @@ public class QuizActivity extends AppCompatActivity {
 
     public static final String TAG = "MyApp";
 
-    private  ConstraintLayout layout;
-    private  ArrayList<String> countries;
-    private  ArrayList<String> capitals;
-    private  ArrayList<Button> buttons;
-    private  ArrayList<ImageView> images;
+    private ConstraintLayout layout;
+    private ArrayList<String> countries;
+    private ArrayList<String> capitals;
+    private ArrayList<Button> buttons;
+    private ArrayList<ImageView> images;
+    private ArrayList<Integer> listOfQuestions = new ArrayList<>();
 
-    private  ImageView imageView0, imageView1, imageView2;
+    private ImageView imageView0, imageView1, imageView2;
 
     private int gameCounter;
     public static int rightAnswerCounter;
     private int numberOfQuestion;
     private int numberOfRightAnswer;
-    private  TextView textViewQuestionText, textViewGameCounter;
-    private  Button button1, button2, button3, button0;
+    private TextView textViewQuestionText, textViewGameCounter;
+    private Button button1, button2, button3, button0;
 
     private MediaPlayer rightSound;
     private MediaPlayer wrongSound;
@@ -89,7 +90,7 @@ public class QuizActivity extends AppCompatActivity {
         rightAnswerCounter = 0;
         counterLives = 3;
         initArrays();
-            playGame();
+        playGame();
 
     }
 
@@ -120,7 +121,8 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void playGame() {
-        if (counterLives > 0 ) {
+        if (counterLives > 0 && listOfQuestions.size() < countries.size()) {
+            Log.d(TAG, "playGame: " + listOfQuestions.size());
             setButtonsActive();
             showLives();
             setRandomBackground();
@@ -143,7 +145,6 @@ public class QuizActivity extends AppCompatActivity {
         for (int i = 0; i < buttons.size(); i++) {
             if (i == numberOfRightAnswer) {
                 buttons.get(i).setText(rightAnswerText);
-                Log.d(TAG, "fillButtons rightAnswer is : " + buttons.get(i).getTag());
             } else {
                 while (true) {
                     int wrong = generateWrongAnswer();
@@ -159,7 +160,13 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void generateQuestion() {
-        numberOfQuestion = (int) (Math.random() * countries.size());
+        while (true) {
+            numberOfQuestion = (int) (Math.random() * countries.size());
+            if (!listOfQuestions.contains(numberOfQuestion)) {
+                listOfQuestions.add(numberOfQuestion);
+                break;
+            }
+        }
         numberOfRightAnswer = (int) (Math.random() * buttons.size());
         rightAnswerText = capitals.get(numberOfQuestion);
         textViewQuestionText.setText("Выберите столицу страны:\n" + countries.get(numberOfQuestion));
