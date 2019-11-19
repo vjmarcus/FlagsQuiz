@@ -1,5 +1,5 @@
 # FlagsQuiz
-Simple trivia game with screenshots!
+Simple trivia game with screenshots! (Admob)
 
 ![Альтернативный текст](http://www.picshare.ru/uploads/191119/12HyB2f9y9.jpg)
 ![Альтернативный текст](http://www.picshare.ru/uploads/191119/9431753OaM.jpg)
